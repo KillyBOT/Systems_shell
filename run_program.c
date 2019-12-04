@@ -21,6 +21,7 @@ int run_program(char** buffer){
     wait(&status);
     return status;
   } else {
-    execvp(buffer[0],buffer);
+    if(execvp(buffer[0],buffer) < 0) return -1;
+
   }
 }
