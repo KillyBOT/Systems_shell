@@ -7,11 +7,13 @@ int main(){
   char* dBuf; //Current working directory buffer
   char* rawIn; //The buffer for the raw input
   char** buffer; //The buffer for the parsed input
+  char*** argBuffer; //The seperate argument buffers
   DIR* d; //The current directory
 
   rawIn = malloc(sizeof(char) * MAX_BUFFER_SIZE);
   buffer = malloc(sizeof(char) * MAX_ARGS_SIZE);
   dBuf = malloc(pathconf(".", _PC_PATH_MAX));
+  argBuffer = malloc(sizeof(char) * MAX_BUFFER_SIZE);
 
   time(&t);
 
@@ -33,19 +35,22 @@ int main(){
     }
     printf("\n");*/
 
-    if(!strcmp(buffer[0], "exit")){
+    /*if(!strcmp(buffer[0], "exit")){
+
       printf("Closing shell... See you next time :)\n");
 
       free(rawIn);
       free(buffer);
       free(dBuf);
 
-      return 0;
-    }
+      exit(0);
 
-    status = run_program(buffer);
-    printf("Child returned. Return signal: %d Term signal: %d\n", WEXITSTATUS(status), WTERMSIG(status));
-    if(!WEXITSTATUS(status))printf("Error running program!\n");
+    } else if(!strcmp(buffer[0], "cd")){
+      ch_dir(buffer);
+    } else {
+      status = run_program(buffer);
+      //printf("Child returned. Return signal: %d Term signal: %d\n", WEXITSTATUS(status), WTERMSIG(status));
+    }*/
   }
 
 

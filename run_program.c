@@ -21,7 +21,7 @@ int run_program(char** buffer){
     wait(&status);
     return status;
   } else {
-    if(execvp(buffer[0],buffer) < 0) return -1;
-
+    char** newBuffer = malloc(sizeof(char) * MAX_BUFFER_SIZE);
+    if(execvp(buffer[0],buffer) < 0) printf("%s: %s\n",buffer[0],strerror(errno));
   }
 }
