@@ -4,7 +4,7 @@ else
 	CC = gcc
 endif
 
-OBJECTS = main.o parse_args.o run_program.o ch_dir.o
+OBJECTS = main.o parse_args.o run_program.o ch_dir.o parse_semicolon.o
 
 all: $(OBJECTS) shell.h
 	$(CC) -o KShell $(OBJECTS)
@@ -20,6 +20,9 @@ run_program.o: run_program.c shell.h
 
 ch_dir.o: ch_dir.c shell.h
 	$(CC) -c ch_dir.c
+
+parse_semicolon.o: parse_semicolon.c shell.h
+	$(CC) -c parse_semicolon.c
 
 run:
 	./KShell

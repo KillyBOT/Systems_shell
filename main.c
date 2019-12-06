@@ -6,8 +6,8 @@ int main(){
   int status; //The reaped values from the child process
   char* dBuf; //Current working directory buffer
   char* rawIn; //The buffer for the raw input
-  char** buffer; //The buffer for the parsed input
-  char*** argBuffer; //The seperate argument buffers
+  char** argBuffer; //The seperate argument strings
+  char** buffer; //The buffer to be used
   DIR* d; //The current directory
 
   rawIn = malloc(sizeof(char) * MAX_BUFFER_SIZE);
@@ -21,36 +21,44 @@ int main(){
 
   while(1){
 
-    printf("\033[1;34m%s\033[0m$ ",getcwd(dBuf,pathconf(".", _PC_PATH_MAX))); //Print current working directory, and signifier
+    printf("\033[1;31m%s\033[0m$ ",getcwd(dBuf,pathconf(".", _PC_PATH_MAX))); //Print current working directory, and signifier
 
     fgets(rawIn,MAX_BUFFER_SIZE,stdin);
     rawIn[strlen(rawIn)-1] = '\0';
 
-    parse_args(buffer,rawIn);
 
-    /*int p = 0;
-    while(buffer[p] != NULL){
-      printf("%s", buffer[p]);
-      p++;
+    parse_semicolon(argBuffer,rawIn);
+
+    for(int x = 0; argBuffer[x] != NULL; x++){
+
+      parse_args(buffer,argBuffer[x]);
+
+      int p = 0;
+      while(buffer[p] != NULL){
+        printf("%s", buffer[p]);
+        p++;
+      }
+      printf("\n");
+
+      if(!strcmp(buffer[0], "exit")){
+
+        printf("Closing shell... See you next time :)\n");
+
+        free(rawIn);
+        free(buffer);
+        free(argBuffer);
+        free(dBuf);
+
+        exit(0);
+
+      } else if(!strcmp(buffer[0], "cd")){
+        ch_dir(buffer);
+      } else {
+        status = run_program(buffer);
+        //printf("Child returned. Return signal: %d Term signal: %d\n", WEXITSTATUS(status), WTERMSIG(status));
+      }
+
     }
-    printf("\n");*/
-
-    /*if(!strcmp(buffer[0], "exit")){
-
-      printf("Closing shell... See you next time :)\n");
-
-      free(rawIn);
-      free(buffer);
-      free(dBuf);
-
-      exit(0);
-
-    } else if(!strcmp(buffer[0], "cd")){
-      ch_dir(buffer);
-    } else {
-      status = run_program(buffer);
-      //printf("Child returned. Return signal: %d Term signal: %d\n", WEXITSTATUS(status), WTERMSIG(status));
-    }*/
   }
 
 

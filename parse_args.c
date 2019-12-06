@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /*
-Function purpose: Parse a raw string, split the string every time it sees a
+Function purpose: Parse a string, split the string every time it sees a
 space, and place those pieces into the given buffer.
 
 Input: The first argument is the buffer that will be written to. It will be an
@@ -26,7 +26,9 @@ void parse_args(char** buffer, char* rawIn){
 
   while(rawIn != NULL){
     buffer[p] = strsep(&rawIn," ");
-    p++;
+    printf("%s\n", buffer[p]);
+
+    if(strcmp(rawIn," "))p++;
     //printf("%s\n", rawIn);
   }
 

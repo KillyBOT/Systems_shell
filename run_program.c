@@ -18,10 +18,12 @@ int run_program(char** buffer){
   ifParent = fork();
 
   if(ifParent){
-    wait(&status);
+    waitpid(ifParent,&status,0);
     return status;
-  } else {
-    char** newBuffer = malloc(sizeof(char) * MAX_BUFFER_SIZE);
-    if(execvp(buffer[0],buffer) < 0) printf("%s: %s\n",buffer[0],strerror(errno));
+  } else {    
+    if(execvp(buffer[0],buffer) < 0) {
+      printf("%s: %s\n",buffer[0],strerror(errno));
+      exit(1);
+    }
   }
 }

@@ -15,5 +15,6 @@
 #define SHELL_SUB_VERSION 4
 
 void parse_args(char** buffer, char* rawIn);
+void parse_semicolon(char** buffer, char* rawIn);
 int run_program(char** buffer);
 void ch_dir(char** buffer);
