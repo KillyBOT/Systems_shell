@@ -24,10 +24,11 @@ Example:
 void parse_semicolon(char** buffer,char* rawIn){
     int p = 0;
 
-    while(rawIn != NULL){
+    while(rawIn != NULL && *rawIn != '\0'){
       buffer[p] = strsep(&rawIn,";");
-      //printf("%d\n", strcmp(rawIn," "));
-      if(strcmp(rawIn," ") != 0)p++;
+      while(buffer[p] != NULL && *buffer[p] == ' ') buffer[p]++;
+      while(rawIn != NULL && *rawIn != '\0' && *rawIn == ' ') rawIn++;
+      p++;
     }
 
     buffer[p] = NULL;

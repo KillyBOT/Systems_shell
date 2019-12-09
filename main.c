@@ -33,12 +33,12 @@ int main(){
 
       parse_args(buffer,argBuffer[x]);
 
-      int p = 0;
+      /*int p = 0;
       while(buffer[p] != NULL){
-        printf("%s", buffer[p]);
+        printf("%s ", buffer[p]);
         p++;
       }
-      printf("\n");
+      printf("\n");*/
 
       if(!strcmp(buffer[0], "exit")){
 

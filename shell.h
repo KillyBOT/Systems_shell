@@ -12,7 +12,12 @@
 #define MAX_BUFFER_SIZE 1024
 #define MAX_ARGS_SIZE 256
 #define SHELL_VERSION 0
-#define SHELL_SUB_VERSION 4
+#define SHELL_SUB_VERSION 7
+
+#define TYPE_STANDARD 0
+#define TYPE_REDIRECT_
+
+typedef unsigned char commandType;
 
 void parse_args(char** buffer, char* rawIn);
 void parse_semicolon(char** buffer, char* rawIn);

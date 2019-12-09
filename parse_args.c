@@ -24,11 +24,12 @@ void parse_args(char** buffer, char* rawIn){
 
   int p = 0;
 
-  while(rawIn != NULL){
+  while(rawIn != NULL && *rawIn != '\0'){
     buffer[p] = strsep(&rawIn," ");
-    printf("%s\n", buffer[p]);
-
-    if(strcmp(rawIn," "))p++;
+    //printf("%s\n", buffer[p]);
+    while(buffer[p] != NULL && *buffer[p] == ' ') buffer[p]++;
+    while(rawIn != NULL && *rawIn != '\0' && *rawIn == ' ') rawIn++;
+    p++;
     //printf("%s\n", rawIn);
   }
 
