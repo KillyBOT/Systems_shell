@@ -11,7 +11,7 @@ Output: It will return the int that was reaped from the child process
 Example:
 printf("Program ran. Reaped value %d.",run_program(buffer));
 */
-int run_program(char** buffer){
+int run_program(char** runBuffer, char** buffer){
   int ifParent;
   int status;
 
@@ -20,18 +20,15 @@ int run_program(char** buffer){
   if(ifParent){
     waitpid(ifParent,&status,0);
     return status;
-  } else {    
-
-    char** newBuffer = malloc(sizeof(char) * MAX_ARGS_SIZE);
+  } else {
 
     /*for(int p = 0; buffer[p] != NULL; p++) printf("[%s] \n", buffer[p]);
     printf("\n");*/
 
-    parse_arg(newBuffer,buffer);
+    parse_arg(runBuffer,buffer);
 
-    if(execvp(newBuffer[0],newBuffer) < 0) {
-      printf("%s: %s\n",newBuffer[0],strerror(errno));
-      free(newBuffer);
+    if(execvp(runBuffer[0],runBuffer) < 0) {
+      printf("%s: %s\n",runBuffer[0],strerror(errno));
       exit(1);
     }
 

@@ -17,5 +17,5 @@
 void parse_args(char** buffer, char* rawIn);
 void parse_semicolon(char** buffer, char* rawIn);
 void parse_arg(char** newBuffer, char** buffer);
-int run_program(char** buffer);
+int run_program(char** runBuffer, char** buffer);
 void ch_dir(char** buffer);
