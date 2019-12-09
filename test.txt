@@ -1,0 +1,2 @@
+ls: cannot access 'jdfksdjfjhsjdh': No such file or directory
+ls: cannot access '9847598723980570934827580': No such file or directory

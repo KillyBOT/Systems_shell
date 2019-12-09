@@ -27,7 +27,7 @@ void parse_args(char** buffer, char* rawIn){
   while(rawIn != NULL && *rawIn != '\0'){
     buffer[p] = strsep(&rawIn," ");
     //printf("%s\n", buffer[p]);
-    while(buffer[p] != NULL && *buffer[p] == ' ') buffer[p]++;
+    while(buffer[p] != NULL && *buffer[p] == '\0' && *buffer[p] == ' ') buffer[p]++;
     while(rawIn != NULL && *rawIn != '\0' && *rawIn == ' ') rawIn++;
     p++;
     //printf("%s\n", rawIn);

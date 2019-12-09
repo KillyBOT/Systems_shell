@@ -26,7 +26,6 @@ int main(){
     fgets(rawIn,MAX_BUFFER_SIZE,stdin);
     rawIn[strlen(rawIn)-1] = '\0';
 
-
     parse_semicolon(argBuffer,rawIn);
 
     for(int x = 0; argBuffer[x] != NULL; x++){
@@ -35,7 +34,7 @@ int main(){
 
       /*int p = 0;
       while(buffer[p] != NULL){
-        printf("%s ", buffer[p]);
+        printf("[%s] ", buffer[p]);
         p++;
       }
       printf("\n");*/
@@ -57,7 +56,7 @@ int main(){
         status = run_program(buffer);
         //printf("Child returned. Return signal: %d Term signal: %d\n", WEXITSTATUS(status), WTERMSIG(status));
       }
-
+      free(buffer);
     }
   }
 
