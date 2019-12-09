@@ -4,14 +4,15 @@
 Function purpose: Create a seperate child process, run that child process, wait
 until that child is finished, and return the reaped data from that process
 
-Input: It will take in the parsed input string
+Input: It will take in the buffer that will be used when running, the argument
+buffer, and the file to set stdout to.
 
 Output: It will return the int that was reaped from the child process
 
 Example:
 printf("Program ran. Reaped value %d.",run_program(buffer));
 */
-int run_program(char** runBuffer, char** buffer){
+int run_program(char** runBuffer, char** buffer, FILE* f){
   int ifParent;
   int status;
 
@@ -21,6 +22,7 @@ int run_program(char** runBuffer, char** buffer){
     waitpid(ifParent,&status,0);
     return status;
   } else {
+    stdout = f;
 
     /*for(int p = 0; buffer[p] != NULL; p++) printf("[%s] \n", buffer[p]);
     printf("\n");*/

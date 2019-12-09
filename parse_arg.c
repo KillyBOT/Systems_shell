@@ -15,83 +15,98 @@ Example:
   parse_arg(newBuffer,buffer);
 
   execvp(newBuffer[0],newBuffer);
-
-
 */
 
-void parse_arg(char** newBuffer, char** buffer){
+void parse_arg(char** runBuffer, char** argBuffer){
 	int fd = 0;
 	int argP = 0;
-	int newBufferP = 0;
-	while(buffer[argP] != NULL){
+	int runBufferP = 0;
+	while(argBuffer[argP] != NULL){
 
-      if(!strcmp(buffer[argP],"<")){
+      if(!strcmp(argBuffer[argP],"<")){
 
-      	free(buffer[argP]);
         argP++;
-        fd = open(buffer[argP],O_RDONLY);
+        fd = open(argBuffer[argP],O_RDONLY);
 
         if(fd == -1){
-          printf("%s: %s\n",buffer[argP],strerror(errno));
-          free(newBuffer);
+          printf("%s: %s\n",argBuffer[argP],strerror(errno));
           exit(1);
         }
 
         //oldstdin = dup(stdin);
         dup2(fd,STDIN_FILENO);
 
-      } 
-      else if(!strcmp(buffer[argP],">")){
+      }
+			else if(!strcmp(argBuffer[argP],">")){
 
-      	free(buffer[argP]);
         argP++;
-        fd = open(buffer[argP],O_WRONLY | O_CREAT, 0644);
+        fd = open(argBuffer[argP],O_WRONLY | O_TRUNC | O_CREAT, 0644);
 
         if(fd == -1){
-          printf("%s: %s\n",buffer[argP],strerror(errno));
-          free(newBuffer);
+          printf("%s: %s\n",argBuffer[argP],strerror(errno));
+          exit(1);
+        }
+
+        dup2(fd,STDOUT_FILENO);
+			} else if(!strcmp(argBuffer[argP],">>")){
+
+        argP++;
+        fd = open(argBuffer[argP],O_WRONLY | O_APPEND);
+        if(fd == -1) fd = creat(argBuffer[argP],0644);
+
+        if(fd == -1){
+          printf("%s: %s\n",argBuffer[argP],strerror(errno));
           exit(1);
         }
 
         dup2(fd,STDOUT_FILENO);
 
-      } else if(!strcmp(buffer[argP],">>")){
+      } else if( !strcmp(argBuffer[argP],"2>") ){
 
         argP++;
-        fd = open(buffer[argP],O_WRONLY | O_APPEND, 0644);
-        if(fd == -1) fd = creat(buffer[argP],0644);
+        fd = open(argBuffer[argP],O_WRONLY | O_TRUNC | O_CREAT, 0644);
 
         if(fd == -1){
-          printf("%s: %s\n",buffer[argP],strerror(errno));
-          free(newBuffer);
-          exit(1);
-        }
-
-        dup2(fd,STDOUT_FILENO);
-
-      } else if(!strcmp(buffer[argP],"2>")){
-
-        argP++;
-        fd = open(buffer[argP],O_WRONLY | O_APPEND, 0644);
-        if(fd == -1) fd = creat(buffer[argP],0644);
-
-        if(fd == -1){
-          printf("%s: %s\n",buffer[argP],strerror(errno));
-          free(newBuffer);
+          printf("%s: %s\n",argBuffer[argP],strerror(errno));
           exit(1);
         }
 
         dup2(fd,STDERR_FILENO);
 
-      } else if(!strcmp(buffer[argP],"&>")){
+      } else if(!strcmp(argBuffer[argP],"&>")){
 
         argP++;
-        fd = open(buffer[argP],O_WRONLY | O_APPEND, 0644);
-        if(fd == -1) fd = creat(buffer[argP],0644);
+        fd = open(argBuffer[argP],O_WRONLY | O_TRUNC | O_CREAT, 0644);
 
         if(fd == -1){
-          printf("%s: %s\n",buffer[argP],strerror(errno));
-          free(newBuffer);
+          printf("%s: %s\n",argBuffer[argP],strerror(errno));
+          exit(1);
+        }
+
+        dup2(fd,STDERR_FILENO);
+        dup2(fd,STDOUT_FILENO);
+
+      } else if(!strcmp(argBuffer[argP],"2>>")){
+
+        argP++;
+        fd = open(argBuffer[argP],O_WRONLY | O_TRUNC);
+				if(fd == -1) fd = creat(argBuffer[argP],0644);
+
+        if(fd == -1){
+          printf("%s: %s\n",argBuffer[argP],strerror(errno));
+          exit(1);
+        }
+
+        dup2(fd,STDERR_FILENO);
+
+      } else if(!strcmp(argBuffer[argP],"&>>")){
+
+        argP++;
+        fd = open(argBuffer[argP],O_WRONLY | O_TRUNC);
+				if(fd == -1) fd = creat(argBuffer[argP],0644);
+
+        if(fd == -1){
+          printf("%s: %s\n",argBuffer[argP],strerror(errno));
           exit(1);
         }
 
@@ -99,12 +114,12 @@ void parse_arg(char** newBuffer, char** buffer){
         dup2(fd,STDOUT_FILENO);
 
       } else {
-        newBuffer[newBufferP] = buffer[argP];
-        newBufferP++;
+        runBuffer[runBufferP] = argBuffer[argP];
+        runBufferP++;
       }
 
       argP++;
     }
 
-    newBuffer[newBufferP] = NULL;
+    argBuffer[runBufferP] = NULL;
 }

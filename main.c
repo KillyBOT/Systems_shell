@@ -6,16 +6,18 @@ int main(){
   int status; //The reaped values from the child process
   char* dBuf; //Current working directory buffer
   char* rawIn; //The raw input as a string
-  char** argBuffer; //The first buffer, where splits happen in between semicolons
-  char** buffer; //The second buffer, where splits happen in between spaces
-  char** runBuffer; //The third buffer, which will be the actual command that will be issued
+  char** semiBuffer; //The first buffer, where splits happen in between semicolons
+  char** pipeBuffer; //The second buffer, where splits happen between vertical slashes
+  char** argBuffer; //The third buffer, where splits happen between spaces
+  char** runBuffer; //The fourth buffer, which will be the actual command that will be issued
   DIR* d; //The current directory
 
   rawIn = malloc(sizeof(char) * MAX_BUFFER_SIZE);
-  buffer = malloc(sizeof(char) * MAX_ARGS_SIZE);
   dBuf = malloc(pathconf(".", _PC_PATH_MAX));
-  argBuffer = malloc(sizeof(char) * MAX_BUFFER_SIZE);
-  runBuffer = malloc(sizeof(char) * MAX_BUFFER_SIZE);
+  semiBuffer = malloc(sizeof(char) * MAX_ARGS_SIZE);
+  pipeBuffer = malloc(sizeof(char) * MAX_ARGS_SIZE);
+  argBuffer = malloc(sizeof(char) * MAX_ARGS_SIZE);
+  runBuffer = malloc(sizeof(char) * MAX_ARGS_SIZE);
 
   time(&t);
 
@@ -28,11 +30,11 @@ int main(){
     fgets(rawIn,MAX_BUFFER_SIZE,stdin);
     rawIn[strlen(rawIn)-1] = '\0';
 
-    parse_semicolon(argBuffer,rawIn);
+    parse_semicolon(semiBuffer,rawIn);
 
-    for(int x = 0; argBuffer[x] != NULL; x++){
+    for(int x = 0; semiBuffer[x] != NULL; x++){ //Parse each semicolon arg
 
-      parse_args(buffer,argBuffer[x]);
+      parse_args(pipeBuffer,semiBuffer[x]);
 
       /*int p = 0;
       while(buffer[p] != NULL){
@@ -41,25 +43,29 @@ int main(){
       }
       printf("\n");*/
 
-      if(!strcmp(buffer[0], "exit")){
+      if(!strcmp(pipeBuffer[0], "exit")){
 
         printf("Closing shell... See you next time :)\n");
 
         free(rawIn);
-        free(buffer);
+        free(semiBuffer);
+        free(pipeBuffer);
         free(argBuffer);
+        free(runBuffer);
         free(dBuf);
 
         exit(0);
 
-      } else if(!strcmp(buffer[0], "cd")){
-        ch_dir(buffer);
+      } else if(!strcmp(pipeBuffer[0], "cd")){
+        ch_dir(pipeBuffer);
       } else {
-        status = run_program(runBuffer,buffer);
+        status = run_program(argBuffer,pipeBuffer,stdout);
         //printf("Child returned. Return signal: %d Term signal: %d\n", WEXITSTATUS(status), WTERMSIG(status));
       }
-      free(buffer);
-      free(runBuffer);
+      //free(semiBuffer);
+      //free(pipeBuffer);
+      //free(argBuffer);
+      //free(runBuffer);
     }
   }
 

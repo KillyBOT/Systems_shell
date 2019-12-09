@@ -20,18 +20,18 @@ Example:
   //bufferedIn should equal ["This","is","a","test",NULL,...]
 */
 
-void parse_args(char** buffer, char* rawIn){
+void parse_args(char** argBuffer, char* rawIn){
 
   int p = 0;
 
   while(rawIn != NULL && *rawIn != '\0'){
-    buffer[p] = strsep(&rawIn," ");
+    argBuffer[p] = strsep(&rawIn," ");
     //printf("%s\n", buffer[p]);
-    while(buffer[p] != NULL && *buffer[p] == '\0' && *buffer[p] == ' ') buffer[p]++;
+    while(argBuffer[p] != NULL && *argBuffer[p] == '\0' && *argBuffer[p] == ' ') argBuffer[p]++;
     while(rawIn != NULL && *rawIn != '\0' && *rawIn == ' ') rawIn++;
     p++;
     //printf("%s\n", rawIn);
   }
 
-  buffer[p] = NULL;
+  argBuffer[p] = NULL;
 }

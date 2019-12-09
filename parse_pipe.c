@@ -1,9 +1,8 @@
 #include "shell.h"
-
 /*
 Function purpose: Parse a raw string, split the string every time it sees a
-semicolon, and place those pieces into the given buffer. This allows for multiple
-commands to be written in one line.
+vertical slash, and place those pieces into the given buffer. This will be used
+for piping.
 
 Input: The first argument is the buffer that will be written to. It will be an
 array of pointers, with a size of 64. The second argument is the raw input,
@@ -13,23 +12,23 @@ Output: It won't output anything, but it will change the first input
 
 Example:
 
-  char* rawIn = "This is a test"
+  char* rawIn = "ls | cat"
   char** bufferedIn;
 
-  parse_args(bufferedIn, rawIn);
+  parse_pipe(bufferedIn, rawIn);
 
-  //bufferedIn should equal ["This","is","a","test",NULL,...]
+  //bufferedIn should equal ["ls","cat",...]
 */
 
-void parse_semicolon(char** semiBuffer,char* rawIn){
+void parse_pipe(char** pipeBuffer, char* rawIn){
     int p = 0;
 
     while(rawIn != NULL && *rawIn != '\0'){
-      semiBuffer[p] = strsep(&rawIn,";");
-      while(semiBuffer[p] != NULL && *semiBuffer[p] != '\0' && *semiBuffer[p] == ' ') semiBuffer[p]++;
+      pipeBuffer[p] = strsep(&rawIn,"|");
+      while(pipeBuffer[p] != NULL && *pipeBuffer[p] != '\0' && *pipeBuffer[p] == ' ') pipeBuffer[p]++;
       while(rawIn != NULL && *rawIn != '\0' && *rawIn == ' ') rawIn++;
       p++;
     }
 
-    semiBuffer[p] = NULL;
+    pipeBuffer[p] = NULL;
 }

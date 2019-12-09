@@ -14,8 +14,10 @@
 #define SHELL_VERSION 0
 #define SHELL_SUB_VERSION 10
 
-void parse_args(char** buffer, char* rawIn);
-void parse_semicolon(char** buffer, char* rawIn);
-void parse_arg(char** newBuffer, char** buffer);
-int run_program(char** runBuffer, char** buffer);
+void parse_args(char** argBuffer, char* rawIn);
+void parse_semicolon(char** semiBuffer, char* rawIn);
+void parse_pipe(char** pipeBuffer, char* rawIn);
+void parse_arg(char** runBuffer, char** argBuffer);
+int pipe_program(char** runBuffer,char** argBuffer, char** pipeBuffer);
+int run_program(char** runBuffer, char** argBuffer, FILE* f);
 void ch_dir(char** buffer);
