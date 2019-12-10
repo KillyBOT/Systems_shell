@@ -34,14 +34,7 @@ int main(){
 
     for(int x = 0; semiBuffer[x] != NULL; x++){ //Parse each semicolon arg
 
-      parse_args(pipeBuffer,semiBuffer[x]);
-
-      /*int p = 0;
-      while(buffer[p] != NULL){
-        printf("[%s] ", buffer[p]);
-        p++;
-      }
-      printf("\n");*/
+      parse_pipe(pipeBuffer,semiBuffer[x]);
 
       if(!strcmp(pipeBuffer[0], "exit")){
 
@@ -59,7 +52,7 @@ int main(){
       } else if(!strcmp(pipeBuffer[0], "cd")){
         ch_dir(pipeBuffer);
       } else {
-        status = run_program(argBuffer,pipeBuffer,stdout);
+        status = pipe_program(runBuffer,argBuffer,pipeBuffer);
         //printf("Child returned. Return signal: %d Term signal: %d\n", WEXITSTATUS(status), WTERMSIG(status));
       }
       //free(semiBuffer);
@@ -67,6 +60,7 @@ int main(){
       //free(argBuffer);
       //free(runBuffer);
     }
+    break;
   }
 
 

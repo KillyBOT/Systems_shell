@@ -17,13 +17,34 @@ printf("Program ran. Reaped value %d.",pipe_program(argBuffer,buffer));
 int pipe_program(char** runBuffer,char** argBuffer, char** pipeBuffer){
 
   int p = 0;
-  FILE* f;
+  int oldstdout = dup(STDOUT_FILENO);
+  int oldstdin = dup(STDIN_FILENO);
+  int in = oldstdin;
+  int out = oldstdout;
 
   while(pipeBuffer[p] != NULL){
-    if(pipeBuffer[p + 1] == NULL) f = stdout;
+
+    if(pipeBuffer[p + 1] == NULL) {
+      out = oldstdout;
+    }
+    else{
+      out = creat("temp",0644);
+    }
 
     parse_args(argBuffer,pipeBuffer[p]);
 
-    run_program(runBuffer,)
+    int n = 0;
+    while(argBuffer[n] != NULL){
+      printf("[%s] ", argBuffer[n]);
+      n++;
+    }
+    printf("\n");
+
+    run_program(runBuffer,argBuffer,in,out);
+
+    if(pipeBuffer[p + 1] != NULL){
+      in = out;
+    }
+    p++;
   }
 }

@@ -19,5 +19,5 @@ void parse_semicolon(char** semiBuffer, char* rawIn);
 void parse_pipe(char** pipeBuffer, char* rawIn);
 void parse_arg(char** runBuffer, char** argBuffer);
 int pipe_program(char** runBuffer,char** argBuffer, char** pipeBuffer);
-int run_program(char** runBuffer, char** argBuffer, FILE* f);
+int run_program(char** runBuffer, char** argBuffer, int in, int out);
 void ch_dir(char** buffer);
