@@ -12,12 +12,14 @@
 #define MAX_BUFFER_SIZE 1024
 #define MAX_ARGS_SIZE 256
 #define SHELL_VERSION 0
-#define SHELL_SUB_VERSION 10
+#define SHELL_SUB_VERSION 13
+#define REPLACE_IN 1
+#define REPLACE_OUT 2
 
 void parse_args(char** argBuffer, char* rawIn);
 void parse_semicolon(char** semiBuffer, char* rawIn);
 void parse_pipe(char** pipeBuffer, char* rawIn);
 void parse_arg(char** runBuffer, char** argBuffer);
 int pipe_program(char** runBuffer,char** argBuffer, char** pipeBuffer);
-int run_program(char** runBuffer, char** argBuffer, int in, int out);
+int run_program(char** runBuffer, char** argBuffer, int status,int currentFile);
 void ch_dir(char** buffer);
