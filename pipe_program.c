@@ -19,14 +19,21 @@ int pipe_program(char** runBuffer,char** argBuffer, char** pipeBuffer){
   int p = 0;
   int currentFile = 0;
   int status = 2;
+  int in = STDOUT_FILENO;
+  int out = -1;
+  int ifLast = 0;
+  int oldin = dup(STDIN_FILENO);
+  int pipefd[2];
+  char copy_buffer[1];
 
   while(pipeBuffer[p] != NULL){
     //printf("%d %d %d\n", currentFile,in,out);
 
-    if(pipeBuffer[p + 1] == NULL) {
+    /*if(pipeBuffer[p + 1] == NULL) {
       if(p == 0) status = 0;
       else status = REPLACE_IN;
-    }
+    }*/
+    if(pipeBuffer[p + 1] == NULL) ifLast = 1;
 
     parse_args(argBuffer,pipeBuffer[p]);
 
@@ -36,16 +43,28 @@ int pipe_program(char** runBuffer,char** argBuffer, char** pipeBuffer){
       n++;
     }
     printf("\n");*/
+    //pipe(pipefd);
 
-    run_program(runBuffer,argBuffer,status,currentFile);
+    //tempPipeFD = dup(pipefd[1]);
 
-    if(pipeBuffer[p + 1] != NULL){
+
+    in = run_program(runBuffer,argBuffer,STDIN_FILENO,ifLast);
+    dup2(in,STDIN_FILENO);
+    close(in);
+
+    if(pipeBuffer[p+1] == NULL){
+      close(STDIN_FILENO);
+      dup2(oldin,STDIN_FILENO);
+    }
+
+    /*if(pipeBuffer[p + 1] != NULL){
       status = REPLACE_OUT | REPLACE_IN;
       currentFile = !currentFile;
-    }
+    }*/
+
     p++;
   }
 
-  remove("a");
-  remove("b");
+  //remove("a");
+  //remove("b");
 }

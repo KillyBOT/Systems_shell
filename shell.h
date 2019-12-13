@@ -15,11 +15,13 @@
 #define SHELL_SUB_VERSION 13
 #define REPLACE_IN 1
 #define REPLACE_OUT 2
+#define PIPE_READ 0
+#define PIPE_WRITE 1
 
 void parse_args(char** argBuffer, char* rawIn);
 void parse_semicolon(char** semiBuffer, char* rawIn);
 void parse_pipe(char** pipeBuffer, char* rawIn);
 void parse_arg(char** runBuffer, char** argBuffer);
 int pipe_program(char** runBuffer,char** argBuffer, char** pipeBuffer);
-int run_program(char** runBuffer, char** argBuffer, int status,int currentFile);
+int run_program(char** runBuffer, char** argBuffer, int in, int ifLast);
 void ch_dir(char** buffer);
