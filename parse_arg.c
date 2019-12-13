@@ -34,7 +34,7 @@ void parse_arg(char** runBuffer, char** argBuffer){
         }
 
         dup2(fd,STDIN_FILENO);
-
+				close(fd);
       }
 			else if(!strcmp(argBuffer[argP],">")){
 
@@ -47,6 +47,7 @@ void parse_arg(char** runBuffer, char** argBuffer){
         }
 
         dup2(fd,STDOUT_FILENO);
+				close(fd);
 			} else if(!strcmp(argBuffer[argP],">>")){
 
         argP++;
@@ -59,6 +60,7 @@ void parse_arg(char** runBuffer, char** argBuffer){
         }
 
         dup2(fd,STDOUT_FILENO);
+				close(fd);
 
       } else if( !strcmp(argBuffer[argP],"2>") ){
 
@@ -71,6 +73,7 @@ void parse_arg(char** runBuffer, char** argBuffer){
         }
 
         dup2(fd,STDERR_FILENO);
+				close(fd);
 
       } else if(!strcmp(argBuffer[argP],"&>")){
 
@@ -84,6 +87,7 @@ void parse_arg(char** runBuffer, char** argBuffer){
 
         dup2(fd,STDERR_FILENO);
         dup2(fd,STDOUT_FILENO);
+				close(fd);
 
       } else if(!strcmp(argBuffer[argP],"2>>")){
 
@@ -97,6 +101,7 @@ void parse_arg(char** runBuffer, char** argBuffer){
         }
 
         dup2(fd,STDERR_FILENO);
+				close(fd);
 
       } else if(!strcmp(argBuffer[argP],"&>>")){
 
@@ -111,6 +116,7 @@ void parse_arg(char** runBuffer, char** argBuffer){
 
         dup2(fd,STDERR_FILENO);
         dup2(fd,STDOUT_FILENO);
+				close(fd);
 
       } else {
         runBuffer[runBufferP] = argBuffer[argP];

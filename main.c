@@ -9,7 +9,7 @@ int main(){
   char** semiBuffer; //The first buffer, where splits happen in between semicolons
   char** pipeBuffer; //The second buffer, where splits happen between vertical slashes
   char** argBuffer; //The third buffer, where splits happen between spaces
-  char** runBuffer; //The fourth buffer, which will be the actual command that will be issued
+  char** runBuffer; //The fourth buffer, which will be the actual command that will be issued to execvp
   DIR* d; //The current directory
 
   rawIn = malloc(sizeof(char) * MAX_BUFFER_SIZE);
