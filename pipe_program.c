@@ -37,6 +37,14 @@ int pipe_program(char** runBuffer,char** argBuffer, char** pipeBuffer){
 
     parse_args(argBuffer,pipeBuffer[p]);
 
+    if(!strcmp(argBuffer[0],"cd")){
+      ch_dir(argBuffer);
+      in = STDIN_FILENO;
+    } else {
+      in = run_program(runBuffer,argBuffer,STDIN_FILENO,ifLast);
+      dup2(in,STDIN_FILENO);
+      close(in);
+    }
     /*int n = 0;
     while(argBuffer[n] != NULL){
       printf("[%s] ", argBuffer[n]);
@@ -47,13 +55,10 @@ int pipe_program(char** runBuffer,char** argBuffer, char** pipeBuffer){
 
     //tempPipeFD = dup(pipefd[1]);
 
-
-    in = run_program(runBuffer,argBuffer,STDIN_FILENO,ifLast);
-    dup2(in,STDIN_FILENO);
-    close(in);
-
     if(pipeBuffer[p+1] == NULL){
-      close(STDIN_FILENO);
+      //printf("%d\n", in);
+      //close(in);
+      //close(STDIN_FILENO);
       dup2(oldin,STDIN_FILENO);
     }
 

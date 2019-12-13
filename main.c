@@ -49,8 +49,8 @@ int main(){
 
         exit(0);
 
-      } else if(!strcmp(pipeBuffer[0], "cd")){
-        ch_dir(pipeBuffer);
+      //} else if(!strcmp(pipeBuffer[0], "cd")){
+        //ch_dir(pipeBuffer);
       } else {
         status = pipe_program(runBuffer,argBuffer,pipeBuffer);
         //printf("Child returned. Return signal: %d Term signal: %d\n", WEXITSTATUS(status), WTERMSIG(status));
