@@ -33,7 +33,6 @@ void parse_arg(char** runBuffer, char** argBuffer){
           exit(1);
         }
 
-        //oldstdin = dup(stdin);
         dup2(fd,STDIN_FILENO);
 
       }

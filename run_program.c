@@ -1,24 +1,21 @@
 #include "shell.h"
 
 /*
-Function purpose: Create a seperate child process, run that child process, wait
-until that child is finished, and return the reaped data from that process. It
-will also pipe to certain files if noted by the status.
+Function purpose: Creates a pipe, and then forks. The parent waits for the child
+program, and the child runs, sending its output to the pipe, which the parent
+will pick up.
 
 Input: It will take in the buffer that will be used when running, the argument
-buffer, whether to set the input and output (if status)
+buffer, the file descriptor of what to set STDIN to, and if it's the last
+program in the chain
 
-Output: It will return the int that was reaped from the child process
+Output: It will return the file descriptor of the read end of the pipe it created
 
 Example:
-printf("Program ran. Reaped value %d.",run_program(buffer));
+int nextIn = run_program(runBuffer,argBuffer,STDIN_FILENO,0);
 */
 int run_program(char** runBuffer, char** argBuffer, int in, int ifLast){
-  int ifParent;
-  int childStatus;
-  char* f1 = "a";
-  char* f2 = "b";
-  int pipefd[2];
+  int ifParent, childStatus, pipefd[2];
 
   pipe(pipefd);
   //printf("%d %d\n", pipefd[PIPE_READ],pipefd[PIPE_WRITE]);
@@ -27,40 +24,18 @@ int run_program(char** runBuffer, char** argBuffer, int in, int ifLast){
   if(ifParent){
     close(pipefd[PIPE_WRITE]);
     waitpid(ifParent,&childStatus,0);
-    //return childStatus;
-    if(ifLast){
-      close(pipefd[PIPE_READ]);
-      return STDIN_FILENO;
-    }
-    else return pipefd[PIPE_READ];
 
+    return pipefd[PIPE_READ];
   } else {
 
-    /*for(int p = 0; buffer[p] != NULL; p++) printf("[%s] \n", buffer[p]);
-    printf("\n");*/
-    //printf("%d %d\n", currentFile, status);
-
-    /*if((status & REPLACE_IN)) {
-      int in;
-
-      if(currentFile) in = open(f1,O_RDONLY);
-      else in = open(f2,O_RDONLY);
-
-      dup2(in,STDIN_FILENO);
-    }
-
-    if((status & REPLACE_OUT)) {
-      int out;
-
-      if(currentFile) out = creat(f2,0644);
-      else out = creat(f1,0644);
-
-      dup2(out,STDOUT_FILENO);
-    }*/
-
+    close(pipefd[PIPE_READ]);
 
     dup2(in,STDIN_FILENO);
-    if(!ifLast)dup2(pipefd[PIPE_WRITE],STDOUT_FILENO);
+
+    if(!ifLast){
+      dup2(pipefd[PIPE_WRITE],STDOUT_FILENO);
+    }
+
     parse_arg(runBuffer,argBuffer);
 
     if(execvp(runBuffer[0],runBuffer) < 0) {

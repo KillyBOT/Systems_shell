@@ -26,11 +26,9 @@ void parse_args(char** argBuffer, char* rawIn){
 
   while(rawIn != NULL && *rawIn != '\0'){
     argBuffer[p] = strsep(&rawIn," ");
-    //printf("%s\n", buffer[p]);
     while(argBuffer[p] != NULL && *argBuffer[p] == '\0' && *argBuffer[p] == ' ') argBuffer[p]++;
     while(rawIn != NULL && *rawIn != '\0' && *rawIn == ' ') rawIn++;
     p++;
-    //printf("%s\n", rawIn);
   }
 
   argBuffer[p] = NULL;
