@@ -5,6 +5,7 @@ int main(){
   time_t t; //The current time
   int status; //The reaped values from the child process
   char* dBuf; //Current working directory buffer
+  char uName[MAX_BUFFER_SIZE]; //Username buffer
   char* rawIn; //The raw input as a string
   char** semiBuffer; //The first buffer, where splits happen in between semicolons
   char** pipeBuffer; //The second buffer, where splits happen between vertical slashes
@@ -20,12 +21,13 @@ int main(){
   runBuffer = malloc(sizeof(char) * MAX_ARGS_SIZE);
 
   time(&t);
+  getlogin_r(uName,MAX_BUFFER_SIZE);
 
   printf("Welcome to KShell %d.%d\nCurrent time is %s\n", SHELL_VERSION, SHELL_SUB_VERSION, ctime(&t));
 
   while(1){
 
-    printf("\033[1;31m%s\033[0m$ ",getcwd(dBuf,pathconf(".", _PC_PATH_MAX))); //Print current working directory, and signifier
+    printf("\033[1;32m%s\033[0m:\033[1;31m%s\033[0m$ ",uName,getcwd(dBuf,pathconf(".", _PC_PATH_MAX))); //Print current working directory, and signifier
 
     fgets(rawIn,MAX_BUFFER_SIZE,stdin);
     rawIn[strlen(rawIn)-1] = '\0';

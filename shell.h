@@ -7,6 +7,8 @@
 #include <string.h>
 #include <dirent.h>
 #include <sys/wait.h>
+#include <sys/types.h>
+#include <grp.h>
 #include <errno.h>
 
 #define MAX_BUFFER_SIZE 1024
