@@ -1,7 +1,7 @@
 #include "shell.h"
 /*
 Function purpose: Parse a list of arguments, and do appropriate things for stuff
-such as file redirection or piping
+such as file redirection or piping.
 
 Input: The first argument will be the new buffer that will be execvp'd, and the
 second argument will be the original parsed argument array.
@@ -92,7 +92,7 @@ void parse_arg(char** runBuffer, char** argBuffer){
       } else if(!strcmp(argBuffer[argP],"2>>")){
 
         argP++;
-        fd = open(argBuffer[argP],O_WRONLY | O_TRUNC);
+        fd = open(argBuffer[argP],O_WRONLY | O_APPEND);
 				if(fd == -1) fd = creat(argBuffer[argP],0644);
 
         if(fd == -1){
@@ -106,7 +106,7 @@ void parse_arg(char** runBuffer, char** argBuffer){
       } else if(!strcmp(argBuffer[argP],"&>>")){
 
         argP++;
-        fd = open(argBuffer[argP],O_WRONLY | O_TRUNC);
+        fd = open(argBuffer[argP],O_WRONLY | O_APPEND);
 				if(fd == -1) fd = creat(argBuffer[argP],0644);
 
         if(fd == -1){

@@ -13,8 +13,8 @@
 
 #define MAX_BUFFER_SIZE 1024
 #define MAX_ARGS_SIZE 256
-#define SHELL_VERSION 0
-#define SHELL_SUB_VERSION 16
+#define SHELL_VERSION 1
+#define SHELL_SUB_VERSION 0
 #define PIPE_READ 0
 #define PIPE_WRITE 1
 

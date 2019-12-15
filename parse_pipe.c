@@ -5,7 +5,7 @@ vertical slash, and place those pieces into the given buffer. This will be used
 for piping.
 
 Input: The first argument is the buffer that will be written to. It will be an
-array of pointers, with a size of 64. The second argument is the raw input,
+array of pointers, with a size of MAX_ARGS_SIZE. The second argument is the raw input,
 as a string.
 
 Output: It won't output anything, but it will change the first input
